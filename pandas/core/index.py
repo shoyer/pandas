@@ -116,10 +116,11 @@ class Index(IndexOpsMixin, FrozenNDArray):
                                            **kwargs)
                 except tslib.OutOfBoundsDatetime:
                     pass
-                if dtype is not None and _o_dtype == dtype:
-                    return Index(result.to_pydatetime(), dtype=_o_dtype)
                 else:
-                    return result
+                    if dtype is not None and _o_dtype == dtype:
+                        return Index(result.to_pydatetime(), dtype=_o_dtype)
+                    else:
+                        return result
             elif issubclass(data.dtype.type, np.timedelta64):
                 return Int64Index(data, copy=copy, name=name)
 
