@@ -161,7 +161,7 @@ class Index(IndexOpsMixin, FrozenNDArray):
                     try:
                         return DatetimeIndex(data, copy=copy, name=name,
                                              **kwargs)
-                    except tslib.OutOfBoundsDatetime:
+                    except (tslib.OutOfBoundsDatetime, ValueError):
                         pass
                 elif inferred == 'period':
                     return PeriodIndex(subarr, name=name, **kwargs)

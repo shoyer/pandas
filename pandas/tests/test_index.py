@@ -172,14 +172,16 @@ class TestIndex(tm.TestCase):
         self.assertEqual(result,'MS')
 
     def test_constructor_out_of_bounds_datetime(self):
-        arr = np.array([datetime(1000, 1, 1)])
-        result = Index(arr)
-        self.assert_numpy_array_equal(arr, result.values)
+        for arr in [[datetime(1000, 1, 1)],
+                    np.array([datetime(1000, 1, 1)])]:
+            result = Index(arr)
+            self.assert_numpy_array_equal(arr, result.values)
 
         _skip_if_need_numpy_1_7()
-        arr = np.array([np.datetime64(datetime(1000, 1, 1))])
-        result = Index(arr)
-        self.assert_numpy_array_equal(arr, result.values)
+        for arr in [[np.datetime64(datetime(1000, 1, 1))],
+                    np.array([np.datetime64(datetime(1000, 1, 1))])]:
+            result = Index(arr)
+            self.assert_numpy_array_equal(arr, result.values)
 
     def test_index_ctor_infer_periodindex(self):
         from pandas import period_range, PeriodIndex
