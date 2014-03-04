@@ -181,8 +181,8 @@ class TestIndex(tm.TestCase):
         expected = np.array([np.datetime64(datetime(1000, 1, 1))])
         self.assert_numpy_array_equal(expected, Index(expected).values)
         expected_list = [np.datetime64(datetime(1000, 1, 1))]
-        print expected.shape, Index(expected_list).values.shape
-        print expected.dtype, Index(expected_list).values.dtype
+        print(expected.shape, Index(expected_list).values.shape)
+        print(expected.dtype, Index(expected_list).values.dtype)
         self.assert_numpy_array_equal(expected, Index(expected_list).values)
 
     def test_index_ctor_infer_periodindex(self):
