@@ -111,7 +111,11 @@ class Index(IndexOpsMixin, FrozenNDArray):
         if isinstance(data, (np.ndarray, ABCSeries)):
             if issubclass(data.dtype.type, np.datetime64):
                 from pandas.tseries.index import DatetimeIndex
-                result = DatetimeIndex(data, copy=copy, name=name, **kwargs)
+                try:
+                    result = DatetimeIndex(data, copy=copy, name=name,
+                                           **kwargs)
+                except tslib.OutOfBoundsDatetime:
+                    pass
                 if dtype is not None and _o_dtype == dtype:
                     return Index(result.to_pydatetime(), dtype=_o_dtype)
                 else:
@@ -154,7 +158,11 @@ class Index(IndexOpsMixin, FrozenNDArray):
                 if (inferred.startswith('datetime') or
                         tslib.is_timestamp_array(subarr)):
                     from pandas.tseries.index import DatetimeIndex
-                    return DatetimeIndex(data, copy=copy, name=name, **kwargs)
+                    try:
+                        return DatetimeIndex(data, copy=copy, name=name,
+                                             **kwargs)
+                    except tslib.OutOfBoundsDatetime:
+                        pass
                 elif inferred == 'period':
                     return PeriodIndex(subarr, name=name, **kwargs)
 
