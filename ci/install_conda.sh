@@ -85,6 +85,10 @@ conda remove -n pandas pandas
 
 source activate pandas
 
+# for testing purposes, install bottleneck from source for all builds
+pip install https://github.com/kwgoodman/bottleneck/archive/rewrite.zip
+python -c 'import bottleneck; print(bottleneck.__version__)'
+
 # set the compiler cache to work
 if [ "$IRON_TOKEN" ]; then
     export PATH=/usr/lib/ccache:/usr/lib64/ccache:$PATH
