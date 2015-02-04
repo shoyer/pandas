@@ -7,7 +7,7 @@ import numpy as np
 from numpy.testing.decorators import slow
 from numpy.testing import assert_array_equal
 
-from pandas import Index, Series, DataFrame
+from pandas import Index, Series, DataFrame, NaT
 
 from pandas.tseries.index import date_range, bdate_range
 from pandas.tseries.offsets import DateOffset
@@ -1101,6 +1101,11 @@ class TestTSPlot(tm.TestCase):
         left, right = ax.get_xlim()
         self.assertEqual(left, ts_irregular.index.min().toordinal())
         self.assertEqual(right, ts_irregular.index.max().toordinal())
+
+    @slow
+    def test_plot_nat(self):
+        import matplotlib.pyplot as plt
+        plt.plot(NaT, 5)
 
 
 def _check_plot_works(f, freq=None, series=None, *args, **kwargs):

@@ -26,6 +26,7 @@ from pandas.tseries.period import Period, PeriodIndex
 
 def register():
     units.registry[lib.Timestamp] = DatetimeConverter()
+    units.registry[lib.NaT] = DatetimeConverter()
     units.registry[Period] = PeriodConverter()
     units.registry[pydt.datetime] = DatetimeConverter()
     units.registry[pydt.date] = DatetimeConverter()
@@ -150,6 +151,8 @@ def _dt_to_float_ordinal(dt):
     """
     if isinstance(dt, (np.ndarray, Index, Series)) and com.is_datetime64_ns_dtype(dt):
         base = dates.epoch2num(dt.asi8 / 1.0E9)
+    elif dt is lib.NaT:
+        base = np.nan
     else:
         base = dates.date2num(dt)
     return base
@@ -166,7 +169,7 @@ class DatetimeConverter(dates.DateConverter):
             except Exception:
                 return values
 
-        if isinstance(values, (datetime, pydt.date)):
+        if isinstance(values, (datetime, pydt.date)) or values is lib.NaT:
             return _dt_to_float_ordinal(values)
         elif isinstance(values, np.datetime64):
             return _dt_to_float_ordinal(lib.Timestamp(values))
